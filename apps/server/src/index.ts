@@ -8,19 +8,37 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+const allowedOrigins = [
+  process.env.CORS_ORIGIN,
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://localhost:5000'
+].filter(Boolean) as string[]
+
+const checkOrigin = (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+  if (!origin) return callback(null, true)
+  const isAllowed = allowedOrigins.some(allowed => origin === allowed || origin.startsWith(allowed)) ||
+                    origin.endsWith('.vercel.app') ||
+                    /^http:\/\/localhost:\d+$/.test(origin)
+  if (isAllowed) {
+    callback(null, true)
+  } else {
+    callback(null, false)
+  }
+}
+
+const corsOptions = {
+  origin: checkOrigin,
+  credentials: true
+}
+
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server, {
-  cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-    credentials: true
-  }
+  cors: corsOptions
 })
 
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-  credentials: true
-}))
+app.use(cors(corsOptions))
 app.use(compression())
 app.use(express.json())
 app.use(cookieParser())
