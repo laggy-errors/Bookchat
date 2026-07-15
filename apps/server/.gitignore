@@ -1,0 +1,17 @@
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+tsconfig.tsbuildinfo
+
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local databases
+prisma/dev.db
+prisma/dev.db-journal
+*.db
+*.db-journal

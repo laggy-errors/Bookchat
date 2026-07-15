@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BookChat — 2-Page Hardcover Book UI Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@500;600&display=swap');
+
+  :root {
+    /* ===== Colors ===== */
+    --paper-bg: #F4ECDD;
+    --paper-lines: rgba(90, 70, 45, 0.07);
+    --cover-bg: #4A3223;       /* Leather warm brown */
+    --ink-black: #1F1B16;
+    --ink-soft: #3B352C;
+    --olive: #6B7A4F;
+    --brass: #B08D57;
+    --oxblood: #7A3B2E;
+    
+    /* ===== Theme Configs ===== */
+    --desk-bg: radial-gradient(circle, #3E2D21 0%, #1E130C 100%);
+    --ribbon-bg: #52664A;
+    --accent: var(--olive);
+    --border-color: rgba(90, 70, 45, 0.12);
+  }
+
+  html[data-theme="cabinet"] {
+    --cover-bg: #2E2B27;       /* Steel/dark institutional frame */
+    --desk-bg: radial-gradient(circle, #4A4642 0%, #201E1D 100%);
+    --accent: #8A6A3C;
+    --ribbon-bg: #8A6A3C;
+    --border-color: rgba(70, 60, 50, 0.15);
+  }
+
+  html[data-theme="library"] {
+    --cover-bg: #5C2E16;       /* Warm mahogany */
+    --desk-bg: url('https://www.transparenttextures.com/patterns/dark-wood.png'), #1E0F07;
+    --accent: #8A4F2A;
+    --ribbon-bg: #6E4B2A;
+    --border-color: rgba(90, 60, 40, 0.15);
+  }
+
+  html[data-theme="corkboard"] {
+    --cover-bg: #7A5A3A;       /* Cork board framing */
+    --desk-bg: radial-gradient(circle, #8C6A4A 0%, #3B2A1C 100%);
+    --accent: #A9432E;
+    --ribbon-bg: #A9432E;
+    --border-color: rgba(120, 80, 60, 0.18);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Lora', serif;
+    background: var(--desk-bg);
+    color: var(--ink-black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  /* ============ MAIN BOOK GRID (Skeuomorphic Cover) ============ */
+  .book-outer {
+    position: relative;
+    width: min(1120px, 100%);
+    height: 700px;
+    background: var(--cover-bg);
+    border-radius: 16px;
+    padding: 12px;  /* Leather cover overhang */
+    box-shadow: 
+      0 30px 70px rgba(0,0,0,0.65), 
+      0 4px 10px rgba(0,0,0,0.3),
+      inset 0 0 15px rgba(0,0,0,0.6);
+    transition: background 0.4s ease;
+  }
+
+  /* Stepped pages stack under edge */
+  .pages-stack {
+    position: absolute;
+    inset: 12px;
+    background: #EDE3D0;
+    border-radius: 8px;
+    box-shadow: 
+      0 0 0 1px #D6C6B2,
+      0 3px 0 #D6C6B2,
+      0 3px 6px rgba(0,0,0,0.15),
+      0 6px 0 #C2B19D,
+      0 6px 10px rgba(0,0,0,0.15),
+      0 9px 0 #AF9F8B,
+      0 9px 12px rgba(0,0,0,0.2);
+  }
+
+  /* Two-page spread container */
+  .spread {
+    position: absolute;
+    inset: 16px;
+    background: var(--paper-bg);
+    border-radius: 6px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+  }
+
+  /* ============ THE GUTTER (Center Spine) ============ */
+  .gutter {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, 
+      rgba(0,0,0,0.2) 0%, 
+      rgba(0,0,0,0.03) 25%, 
+      rgba(0,0,0,0) 50%, 
+      rgba(0,0,0,0.03) 75%, 
+      rgba(0,0,0,0.2) 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+  .gutter-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.15);
+    box-shadow: inset 1px 0 0 rgba(255,255,255,0.08);
+  }
+  /* Spine binding threads */
+  .stitch-top, .stitch-bottom {
+    position: absolute;
+    left: 50%;
+    width: 8px;
+    height: 12px;
+    border-left: 2px solid rgba(0,0,0,0.25);
+    border-right: 2px solid rgba(0,0,0,0.25);
+    transform: translateX(-50%);
+  }
+  .stitch-top { top: 12px; }
+  .stitch-bottom { bottom: 12px; }
+
+  /* ============ PAGES (Left & Right) ============ */
+  .left-page, .right-page {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 30px 45px;
+  }
+
+  .left-page {
+    padding-right: 38px;
+    box-shadow: inset -30px 0 40px rgba(0,0,0,0.08);
+    border-right: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .right-page {
+    padding-left: 38px;
+    box-shadow: inset 30px 0 40px rgba(0,0,0,0.08);
+    border-left: 1px solid rgba(0,0,0,0.05);
+  }
+
+  /* Ruled lines for the right page */
+  .ruled-bg {
+    background-image: repeating-linear-gradient(180deg, transparent 0 35px, var(--paper-lines) 35px 36px);
+    background-position: 0 4px;
+  }
+
+  /* ============ TYPOGRAPHY & BUTTONS ============ */
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    color: var(--ink-black);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h1 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+  .ink-input-group {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .ink-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px dashed rgba(90, 70, 45, 0.4);
+    background: transparent;
+    padding: 8px 4px;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--ink-black);
+    outline: none;
+  }
+  .ink-input::placeholder { color: #a89877; font-style: italic; }
+
+  .btn-gold {
+    background: transparent;
+    border: 1px solid var(--brass);
+    color: var(--ink-black);
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+  }
+  .btn-gold:hover {
+    background: rgba(176, 141, 87, 0.08);
+    transform: translateY(-1px);
+  }
+
+  /* ============ CONVERSATION CARDS ============ */
+  .label-section {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #8c7f67;
+    margin: 10px 4px 8px;
+  }
+  .cards-scroller {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .cards-scroller::-webkit-scrollbar { width: 4px; }
+  .cards-scroller::-webkit-scrollbar-thumb { background: rgba(90, 70, 45, 0.15); border-radius: 4px; }
+
+  .page-card {
+    background: #EDE3D0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    position: relative;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .page-card::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 0;
+    border-color: transparent rgba(0,0,0,0.06) transparent transparent;
+  }
+  .page-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(90, 70, 45, 0.12);
+  }
+  .page-card.active {
+    background: #FBF4E4;
+    border-left-color: var(--accent);
+    box-shadow: 0 5px 12px rgba(90, 70, 45, 0.15);
+  }
+  .page-card .card-title { font-weight: 700; font-size: 13.5px; margin-bottom: 2px; }
+  .page-card .card-meta { font-size: 10.5px; color: #8a7c62; }
+
+  /* ============ SETTINGS RAIL ============ */
+  .settings-rail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed rgba(90, 70, 45, 0.2);
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+  .settings-rail button {
+    background: none;
+    border: none;
+    color: #8c7f67;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .settings-rail button:hover { color: var(--ink-black); }
+
+  /* ============ RIGHT PAGE CONTENT ============ */
+  .bookmark-ribbon {
+    position: absolute;
+    top: -6px;
+    right: 45px;
+    width: 24px;
+    height: 75px;
+    background: var(--ribbon-bg);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+    box-shadow: -2px 3px 6px rgba(0,0,0,0.25);
+    z-index: 8;
+    transform-origin: top center;
+    animation: sway 6s ease-in-out infinite;
+    cursor: pointer;
+  }
+  @keyframes sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(1.2deg); } }
+
+  .header-meta {
+    margin-top: -8px;
+    margin-bottom: 16px;
+    font-size: 11px;
+    color: #8a7c62;
+  }
+
+  .thread-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  .thread-scroll::-webkit-scrollbar { width: 4px; }
+  .thread-scroll::-webkit-scrollbar-thumb { background: rgba(90, 70, 45, 0.15); border-radius: 4px; }
+
+  .msg {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+  }
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #EDE3D0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-weight: bold;
+    font-size: 12px;
+    border: 1px solid rgba(90, 70, 45, 0.2);
+    flex-shrink: 0;
+  }
+  .msg-body {
+    flex: 1;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .msg-body strong { color: var(--ink-black); font-size: 13px; }
+  .msg-body .time { font-size: 10.5px; color: #8a7c62; margin-left: 6px; font-weight: normal; }
+  .msg-body p { margin: 4px 0 0; }
+
+  /* Wet ink bleed scaling */
+  .bleed-in {
+    animation: inkBleed 0.4s ease-out forwards;
+  }
+  @keyframes inkBleed {
+    0% { filter: blur(2px); opacity: 0; transform: scale(0.98); }
+    100% { filter: blur(0px); opacity: 1; transform: scale(1); }
+  }
+
+  /* ============ THE COMPOSER ============ */
+  .composer-wrapper {
+    position: relative;
+    margin-top: 14px;
+    background: #EDE3D0;
+    border-radius: 20px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .composer-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--ink-black);
+  }
+  .composer-wrapper input::placeholder { color: #a89877; font-style: italic; }
+  .composer-wrapper button {
+    background: none;
+    border: none;
+    color: #8c7f67;
+    cursor: pointer;
+    padding: 2px;
+  }
+  .composer-wrapper button:hover { color: var(--ink-black); }
+
+  /* Interactive Skeuomorphic Pen Overlay */
+  .pen-cursor {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M70,10 L90,30 L85,35 L65,15 Z" fill="%231F1B16"/><path d="M65,15 L15,65 L20,70 L70,20 Z" fill="%233A3026"/><path d="M15,65 L5,90 L20,80 L20,70 Z" fill="%23B08D57"/><line x1="8" y1="85" x2="16" y2="77" stroke="%231F1B16" stroke-width="1.5"/></svg>') no-repeat;
+    pointer-events: none;
+    z-index: 100;
+    transition: opacity 0.25s, transform 0.08s ease;
+    opacity: 0;
+    transform: rotate(50deg);
+    transform-origin: bottom left;
+  }
+
+  /* ============ STICKY NOTE NOTIFICATION SYSTEM ============ */
+  #sticky-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+  }
+  .sticky-note {
+    position: absolute;
+    width: 200px;
+    padding: 14px;
+    border-radius: 4px;
+    box-shadow: 
+      -4px 4px 10px rgba(0,0,0,0.15),
+      0 1px 2px rgba(0,0,0,0.1);
+    pointer-events: auto;
+    cursor: grab;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .sticky-note:hover {
+    transform: translateY(-4px) rotate(1deg) !important;
+    box-shadow: -8px 8px 18px rgba(0,0,0,0.22);
+  }
+  .sticky-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .sticky-badge {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+  .badge-same { background: rgba(90, 70, 45, 0.1); color: #5B4636; }
+  .badge-other { background: rgba(0, 0, 0, 0.08); color: #1F1B16; }
+  .sticky-close {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    opacity: 0.6;
+  }
+  .sticky-close:hover { opacity: 1; }
+  .sticky-body { font-size: 12px; line-height: 1.4; }
+  .sticky-body strong { font-family: 'Fraunces', serif; display: block; margin-bottom: 2px; }
+  .sticky-body p { margin: 0; font-style: italic; }
+  .sticky-footer { font-size: 9px; opacity: 0.6; text-align: right; margin-top: 6px; }
+
+  /* ============ BOTTOM PREVIEW CONTROL STRIP ============ */
+  .control-strip {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .theme-label { color: #cfc4aa; font-size: 12.5px; font-weight: 500; }
+  
+  .palette-btn {
+    background: #1c150e;
+    color: #e9dfc9;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .palette-btn:hover, .palette-btn.active {
+    background: #33261a;
+    border-color: rgba(255,255,255,0.25);
+  }
+  .palette-btn .dots { display: flex; gap: 3px; }
+  .palette-btn .dots span { width: 8px; height: 8px; border-radius: 50%; }
+
+  .btn-action {
+    background: var(--brass);
+    color: #1F1B16;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: transform 0.15s;
+  }
+  .btn-action:hover { transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<!-- BOOK OUTER SHELL -->
+<div class="book-outer">
+  <!-- Stepped pages shadow layers -->
+  <div class="pages-stack"></div>
+
+  <!-- SPREAD INNER PANEL -->
+  <div class="spread">
+    <!-- Center Spine Spine -->
+    <div class="gutter">
+      <div class="gutter-line"></div>
+      <div class="stitch-top"></div>
+      <div class="stitch-bottom"></div>
+    </div>
+
+    <!-- LEFT PAGE -->
+    <div class="left-page">
+      <h1><span class="dot"></span>BookChat Shelf</h1>
+
+      <div class="ink-input-group">
+        <input type="text" class="ink-input" placeholder="Search pages..." />
+      </div>
+
+      <button class="btn-gold" id="newConversationBtn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Write to a member
+      </button>
+
+      <div class="label-section">Conversations</div>
+      <div class="cards-scroller">
+        <div class="page-card active" data-title="UI/UX Design Ideas" data-meta="Active · Created: 13 July">
+          <div class="card-title">UI/UX Design Ideas</div>
+          <div class="card-meta">You, Aryan · 10:30 AM</div>
+        </div>
+        <div class="page-card" data-title="Project Brainstorm" data-meta="Created: 12 July">
+          <div class="card-title">Project Brainstorm</div>
+          <div class="card-meta">You, Emma · Yesterday</div>
+        </div>
+        <div class="page-card" data-title="Reading Club Notes" data-meta="Created: 10 July">
+          <div class="card-title">Reading Club Notes</div>
+          <div class="card-meta">Group Chat · Jul 10</div>
+        </div>
+      </div>
+
+      <div class="settings-rail">
+        <button title="Books Switcher"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a2.5 2.5 0 0 1 2.5-2.5H20v14H6.5"/></svg></button>
+        <button title="Favorites"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 17 5.5 21 7.5 13.5 2 9 9 9"/></svg></button>
+        <button title="Trash"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+        <button title="Settings"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33a1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82V9a1.65 1.65 0 0 0 1.51-1z"/></svg></button>
+      </div>
+    </div>
+
+    <!-- RIGHT PAGE -->
+    <div class="right-page ruled-bg">
+      <div class="bookmark-ribbon" title="Book Settings & Invites" id="ribbonInviteBtn"></div>
+      
+      <h1 id="activeTitle">UI/UX Design Ideas</h1>
+      <div class="header-meta" id="activeMeta">Active · Created: 13 July, 10:30 AM</div>
+
+      <!-- MESSAGES LOG -->
+      <div class="thread-scroll" id="thread">
+        <div class="msg">
+          <div class="avatar">U</div>
+          <div class="msg-body">
+            <strong>You</strong><span class="time">10:30 AM</span>
+            <p>What makes a skeuomorphic flat-open hardcover book interface look realistic?</p>
+          </div>
+        </div>
+
+        <div class="msg">
+          <div class="avatar" style="background:#5B4636; color:#FFF">A</div>
+          <div class="msg-body">
+            <strong>Aryan</strong><span class="time">10:31 AM</span>
+            <p>It needs a deep center spine gutter with gradient shadows fading into the gutter, physical page edges stacked underneath, and organic curved lines rather than straight modern boxes!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPOSER -->
+      <div class="composer-wrapper" id="composerBox">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a5 5 0 0 1-7.07-7.07l9.19-9.19a3.5 3.5 0 0 1 4.95 4.95l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+        <input type="text" placeholder="Write on page..." id="composerInput" autocomplete="off" />
+        <button id="sendBtn" title="Write in ink">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+        </button>
+        <!-- Floating Fountain Pen overlay -->
+        <div class="pen-cursor" id="fountainPen"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTAINER FOR FLOATING STICKY NOTES -->
+  <div id="sticky-container"></div>
+</div>
+
+<!-- CONTROLS STRIP -->
+<div class="control-strip">
+  <span class="theme-label">Frame:</span>
+  <button class="palette-btn active" data-theme="paper">
+    <span class="dots"><span style="background:#F4ECDD"></span><span style="background:#6B7A4F"></span><span style="background:#4A3223"></span></span>
+    Notebook
+  </button>
+  <button class="palette-btn" data-theme="cabinet">
+    <span class="dots"><span style="background:#EFE6D3"></span><span style="background:#8A6A3C"></span><span style="background:#2E2B27"></span></span>
+    Cabinet
+  </button>
+  <button class="palette-btn" data-theme="library">
+    <span class="dots"><span style="background:#F1E6CE"></span><span style="background:#6E4B2A"></span><span style="background:#5C2E16"></span></span>
+    Library
+  </button>
+  <button class="palette-btn" data-theme="corkboard">
+    <span class="dots"><span style="background:#F5E9C8"></span><span style="background:#A9432E"></span><span style="background:#7A5A3A"></span></span>
+    Corkboard
+  </button>
+
+  <span style="margin: 0 10px; border-left: 1px solid rgba(255,255,255,0.15); height: 24px;"></span>
+  
+  <button class="btn-action" id="triggerNotificationBtn">
+    🔔 Test Sticky Note Drop
+  </button>
+</div>
+
+<script>
+  // Theme Toggle
+  document.querySelectorAll('.palette-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.palette-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.documentElement.setAttribute('data-theme', btn.dataset.theme === 'paper' ? '' : btn.dataset.theme);
+    });
+  });
+
+  // Card Selector
+  document.querySelectorAll('.page-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.page-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      document.getElementById('activeTitle').textContent = card.dataset.title;
+      document.getElementById('activeMeta').textContent = card.dataset.meta;
+    });
+  });
+
+  // Sending Messages (Lined layout integration)
+  const input = document.getElementById('composerInput');
+  const thread = document.getElementById('thread');
+  const pen = document.getElementById('fountainPen');
+  const composerBox = document.getElementById('composerBox');
+  let penTimeout;
+
+  // Create text width measurement mirror
+  const mirror = document.createElement('span');
+  mirror.style.font = getComputedStyle(input).font;
+  mirror.style.visibility = 'hidden';
+  mirror.style.position = 'absolute';
+  mirror.style.whiteSpace = 'pre';
+  document.body.appendChild(mirror);
+
+  // Sync floating fountain pen writing cursor
+  input.addEventListener('input', () => {
+    mirror.textContent = input.value;
+    const textWidth = mirror.offsetWidth;
+    const inputRect = input.getBoundingClientRect();
+    const parentRect = composerBox.getBoundingClientRect();
+    
+    // Position pen at insertion point
+    const left = inputRect.left - parentRect.left + Math.min(textWidth, inputRect.width - 25);
+    const top = inputRect.top - parentRect.top - 20;
+
+    pen.style.opacity = '1';
+    pen.style.left = left + 'px';
+    pen.style.top = top + 'px';
+    
+    // Add micro wobble writing vibration
+    const wobbleX = (Math.random() * 3) - 1.5;
+    const wobbleY = (Math.random() * 3) - 1.5;
+    pen.style.transform = `rotate(50deg) translate(${wobbleX}px, ${wobbleY}px) scale(1.02)`;
+
+    clearTimeout(penTimeout);
+    penTimeout = setTimeout(() => {
+      pen.style.opacity = '0';
+      pen.style.transform = 'rotate(50deg) scale(1)';
+    }, 1200);
+  });
+
+  function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    const msg = document.createElement('div');
+    msg.className = 'msg bleed-in';
+    msg.innerHTML = `
+      <div class="avatar" style="background:#6B7A4F; color:#FFF">Y</div>
+      <div class="msg-body">
+        <strong>You</strong><span class="time">Just now</span>
+        <p>${text.replace(/</g, '&lt;')}</p>
+      </div>
+    `;
+    thread.appendChild(msg);
+    thread.scrollTop = thread.scrollHeight;
+    input.value = '';
+    pen.style.opacity = '0';
+  }
+
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+  document.getElementById('sendBtn').addEventListener('click', sendMessage);
+
+  // STICKY NOTE SPAWNING & PHYSICS BOUNCE
+  document.getElementById('triggerNotificationBtn').addEventListener('click', spawnStickyNote);
+
+  function spawnStickyNote() {
+    const container = document.getElementById('sticky-container');
+    const colors = [
+      { name: 'yellow', bg: '#FFF9C4', text: '#5D4037' },
+      { name: 'cream', bg: '#FFF8E7', text: '#4A3E3D' },
+      { name: 'mint', bg: '#E8F5E9', text: '#2E7D32' },
+      { name: 'blue', bg: '#E3F2FD', text: '#1565C0' },
+      { name: 'orange', bg: '#FFE0B2', text: '#E65100' },
+      { name: 'pink', bg: '#FCE4EC', text: '#C2185B' }
+    ];
+    
+    const randColor = colors[Math.floor(Math.random() * colors.length)];
+    const isSameBook = Math.random() > 0.4;
+    const badgeText = isSameBook ? '📚 Same Book' : '🌍 Other Book';
+    const badgeClass = isSameBook ? 'badge-same' : 'badge-other';
+    
+    const note = document.createElement('div');
+    note.className = 'sticky-note';
+    note.style.backgroundColor = randColor.bg;
+    note.style.color = randColor.text;
+    
+    // Set landing coordinates inside safe zones
+    const zones = [
+      { top: '80px', left: '60px' },
+      { top: '160px', left: '70px' },
+      { top: '350px', left: '60px' },
+      { top: '80px', right: '60px' },
+      { top: '240px', right: '70px' },
+      { top: '390px', right: '60px' }
+    ];
+    
+    const randZone = zones[Math.floor(Math.random() * zones.length)];
+    
+    note.innerHTML = `
+      <div class="sticky-header">
+        <span class="sticky-badge ${badgeClass}">${badgeText}</span>
+        <button class="sticky-close" onclick="closeSticky(this)">×</button>
+      </div>
+      <div class="sticky-body">
+        <strong>${isSameBook ? 'Aryan' : 'Emma'}</strong>
+        <p>"${isSameBook ? 'The ending shocked me!' : 'You will love Chapter 8.'}"</p>
+      </div>
+      <div class="sticky-footer">Now</div>
+    `;
+    
+    container.appendChild(note);
+    
+    // Starting position (Above Viewport)
+    note.style.top = '-250px';
+    if (randZone.left) {
+      note.style.left = randZone.left;
+    } else {
+      note.style.right = randZone.right;
+    }
+    
+    // Drop animation using spring ease-out bounce
+    setTimeout(() => {
+      note.style.transition = 'top 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.25), transform 0.9s ease';
+      note.style.top = randZone.top;
+      note.style.transform = `rotate(${(Math.random() * 8) - 4}deg)`;
+    }, 50);
+  }
+
+  function closeSticky(button) {
+    const note = button.closest('.sticky-note');
+    // Curl slightly, shrink, fade, and fall down off-screen
+    note.style.transition = 'transform 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19), top 0.5s ease-in, opacity 0.4s';
+    note.style.transform = `rotate(${(Math.random() * 20) - 10}deg) scale(0.7) skewX(5deg)`;
+    note.style.top = '850px';
+    note.style.opacity = '0';
+    setTimeout(() => {
+      note.remove();
+    }, 550);
+  }
+</script>
+
+</body>
+</html>

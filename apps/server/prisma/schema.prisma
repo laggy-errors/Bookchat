@@ -1,0 +1,100 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  passwordHash        String
+  displayName         String    @default("Reader")
+  hasSeenPreamble     Boolean   @default(false)
+  hasSeenTour         Boolean   @default(false)
+  themePreference     String    @default("paper") // "paper" | "cabinet" | "library" | "corkboard"
+  defaultBookId       String?
+  failedLoginAttempts Int       @default(0)
+  lockoutUntil        DateTime?
+  refreshTokenVersion Int       @default(0)
+  username            String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  memberships     BookMember[]
+  messages        Message[]
+  createdBooks    Book[]              @relation("BookCreator")
+  conversations   ConversationMember[]
+
+  defaultBook     Book?     @relation("DefaultBook", fields: [defaultBookId], references: [id], onDelete: SetNull)
+}
+
+model Book {
+  id              String    @id @default(cuid())
+  name            String
+  joinCode        String    @unique
+  passwordHash    String?             // null = no password
+  creatorId       String
+  creator         User      @relation("BookCreator", fields: [creatorId], references: [id])
+  createdAt       DateTime  @default(now())
+
+  members         BookMember[]
+  conversations   Conversation[]
+  defaultForUsers User[]    @relation("DefaultBook")
+}
+
+model BookMember {
+  id        String   @id @default(cuid())
+  bookId    String
+  userId    String
+  role      String   @default("member") // "creator" | "member"
+  joinedAt  DateTime @default(now())
+
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, userId])
+}
+
+model Conversation {
+  id          String   @id @default(cuid())
+  bookId      String
+  isGroup     Boolean  @default(false) // true = the Book's auto-created all-member thread
+  createdAt   DateTime @default(now())
+
+  book        Book                  @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  members     ConversationMember[]
+  messages    Message[]
+
+  @@index([bookId])
+}
+
+model ConversationMember {
+  id             String   @id @default(cuid())
+  conversationId String
+  userId         String
+  lastReadAt     DateTime? // powers unread indicator
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String   @db.Text
+  status         String   @default("sent") // "sent" | "delivered" | "failed_pending_retry"
+  createdAt      DateTime @default(now())
+  editedAt       DateTime?
+  deletedAt      DateTime? // soft delete
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id])
+
+  @@index([conversationId, createdAt])
+}
