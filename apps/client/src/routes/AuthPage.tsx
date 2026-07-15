@@ -69,38 +69,59 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
 
   return (
     <div 
-      className="flex items-center justify-center min-h-screen w-full bg-[#1E130C] p-6 overflow-hidden"
-      style={{ perspective: '1600px' }}
+      className="flex items-center justify-center min-h-screen w-full bg-[#1A1009] p-4 overflow-hidden relative"
+      style={{ 
+        perspective: '2000px',
+        backgroundImage: 'radial-gradient(circle at center, #2C1A0F 0%, #0E0703 100%)'
+      }}
     >
+      {/* 3D Book Shadow Base */}
+      <div 
+        className="absolute w-[460px] h-[640px] rounded-[10px] bg-black/60 blur-[30px] transition-all duration-1000"
+        style={{
+          transform: isOpening ? 'translateY(15px) scale(0.97)' : 'translateY(5px) scale(1)',
+          pointerEvents: 'none',
+          zIndex: 1
+        }}
+      ></div>
+
       {/* 3D Book Container */}
       <div 
-        className="relative w-[420px] h-[580px]"
-        style={{ transformStyle: 'preserve-3d' }}
+        className="relative w-[460px] h-[640px] transition-all duration-1000 ease-out"
+        style={{ 
+          transformStyle: 'preserve-3d',
+          zIndex: 2
+        }}
       >
         
         {/* 1. Underlying Page Stack (Revealed when cover swings open) */}
         <div 
-          className="absolute inset-0 bg-[#EDE3D0] rounded-[6px] shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-center items-center p-8 transition-transform"
+          className="absolute inset-0 bg-[#EDE3D0] rounded-r-[8px] rounded-l-[4px] shadow-[0_15px_35px_rgba(0,0,0,0.5)] flex flex-col justify-center items-center p-8 transition-transform paper-texture"
           style={{
-            transform: isOpening ? 'translateZ(0px) rotateY(-5deg)' : 'translateZ(-5px)',
+            transform: isOpening ? 'translateZ(0px) rotateY(-2deg)' : 'translateZ(-6px)',
             transformOrigin: 'left center',
             transitionDuration: '1.1s',
-            border: '1px solid #D6C6B2'
+            border: '1px solid #D6C6B2',
+            borderLeft: '4px solid #3B2A1C'
           }}
         >
+          {/* Symmetrical Book Page Stack Lines on the side */}
+          <div className="absolute top-0 bottom-0 right-0 w-[8px] bg-gradient-to-r from-[#EDE3D0] via-[#D6C6B2] to-[#AF9F8B] rounded-r-[6px] border-r border-[#9B8C78]"></div>
+
           {/* Internal page layers */}
-          <div className="absolute inset-2 bg-[#F4ECDD] rounded-[4px] shadow-inner border border-[#E3D5B8] flex flex-col items-center justify-center">
-            <span className="font-display text-[#B08D57] font-semibold text-base animate-pulse">
+          <div className="absolute inset-3 bg-[#F5E9D3] rounded-[4px] shadow-inner border border-[#E3D5B8] flex flex-col items-center justify-center ruled-paper">
+            <span className="font-display text-[#B08D57] font-semibold text-lg animate-pulse tracking-wide">
               📖 Opening ledger...
             </span>
+            <p className="font-serif italic text-xs text-[#8c7f67] mt-2">Preparing your records...</p>
           </div>
         </div>
 
         {/* 2. Front Cover Panel (Flipped Y-Axis left-centered) */}
         <div 
-          className="absolute inset-0 bg-[#3B2A1C] rounded-[8px] flex flex-col justify-between p-10 border-l-[14px] border-[#241A12] shadow-[inset_-8px_0_15px_rgba(0,0,0,0.3)] transition-transform"
+          className="absolute inset-0 bg-[#4A3223] rounded-r-[10px] rounded-l-[4px] flex flex-col justify-between p-8 border-l-[16px] border-[#2C1C12] shadow-[inset_-10px_0_20px_rgba(0,0,0,0.4),0_10px_30px_rgba(0,0,0,0.6)] transition-transform paper-texture"
           style={{
-            transform: isOpening ? 'rotateY(-130deg)' : 'rotateY(0deg)',
+            transform: isOpening ? 'rotateY(-140deg)' : 'rotateY(0deg)',
             transformOrigin: 'left center',
             backfaceVisibility: 'hidden',
             transitionDuration: '1.1s',
@@ -108,6 +129,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
             zIndex: 10
           }}
         >
+          {/* Spine gold accent line */}
+          <div className="absolute left-0 top-[5%] bottom-[5%] w-[1px] bg-amber-500/30"></div>
+          {/* Embossed Corner Decorations */}
+          <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-[#B08D57]/30 rounded-tr-[4px]"></div>
+          <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-[#B08D57]/30 rounded-br-[4px]"></div>
           {/* Spine detail line */}
           <div className="absolute left-0 top-[10%] bottom-[10%] w-[2px] bg-yellow-600/20 shadow-inner"></div>
 
