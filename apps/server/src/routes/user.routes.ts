@@ -9,7 +9,7 @@ const router = Router()
 // @desc    Update user profile details
 router.patch('/me', requireAuth, async (req: AuthenticatedRequest, res: Response): Promise<any> => {
   try {
-    const { displayName, themePreference, defaultBookId } = req.body
+    const { displayName, themePreference, defaultBookId, hasSeenPreamble, hasSeenTour } = req.body
     const userId = req.userId
 
     if (!userId) {
@@ -29,6 +29,12 @@ router.patch('/me', requireAuth, async (req: AuthenticatedRequest, res: Response
     }
     if (defaultBookId !== undefined) {
       updateData.defaultBookId = defaultBookId
+    }
+    if (hasSeenPreamble !== undefined) {
+      updateData.hasSeenPreamble = hasSeenPreamble
+    }
+    if (hasSeenTour !== undefined) {
+      updateData.hasSeenTour = hasSeenTour
     }
 
     const updatedUser = await prisma.user.update({
