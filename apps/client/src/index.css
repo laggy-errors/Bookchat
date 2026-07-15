@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=Caveat:wght@400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -202,4 +204,97 @@ body {
   border: none;
   border-bottom: 1px dashed rgba(90, 70, 45, 0.4);
   background: transparent;
+}
+
+/* 10. Book open entrance animation */
+.book-open-animation {
+  animation: bookOpenAnim 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes bookOpenAnim {
+  0% {
+    opacity: 0;
+    transform: perspective(1600px) rotateX(3deg) translateY(20px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1600px) rotateX(0deg) translateY(0) scale(1);
+  }
+}
+
+/* 11. Fade-in utility (used by onboarding, error pages, etc.) */
+.animate-fade-in {
+  animation: fadeInAnim 0.4s ease-out both;
+}
+
+@keyframes fadeInAnim {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 12. Slide-in from left (used by book switcher overlay) */
+.animate-slide-in {
+  animation: slideInAnim 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes slideInAnim {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* 13. Paper card hover lift effect */
+.paper-card-hover {
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+.paper-card-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.paper-card-hover:active {
+  transform: translateY(0);
+}
+
+/* 14. Custom scrollbar — thin warm-toned */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(176, 141, 87, 0.35) transparent;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(176, 141, 87, 0.35);
+  border-radius: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(176, 141, 87, 0.6);
+}
+
+/* 15. Touch / click target minimum size (accessibility) */
+.touch-target {
+  min-width: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 16. Smooth scroll active state */
+.scroll-smooth-active {
+  scroll-behavior: smooth;
+}
+
+/* 17. Page-turn class (visual feedback during book switch) */
+.page-turn-active {
+  animation: pageTurnAnim 0.35s ease-in-out;
+}
+
+@keyframes pageTurnAnim {
+  0%   { opacity: 1; transform: scaleX(1); }
+  50%  { opacity: 0.4; transform: scaleX(0.97); }
+  100% { opacity: 1; transform: scaleX(1); }
 }
