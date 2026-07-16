@@ -9,10 +9,9 @@ interface MessageEntryProps {
 }
 
 // Track which message IDs have already been animated in this session
-// (module-level so it persists across re-renders without triggering re-render itself)
 const animatedIds = new Set<string>()
 
-export const MessageEntry = React.memo<MessageEntryProps>(({
+export const MessageEntry = React.memo<MessageEntryProps>((({
   msg,
   isMe,
   isHighlighted,
@@ -20,54 +19,72 @@ export const MessageEntry = React.memo<MessageEntryProps>(({
   searchQuery
 }) => {
   const timestamp = new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  const senderName = (msg.sender?.displayName || 'Scribe').toUpperCase()
 
-  // Only play ink animations if this message hasn't been seen before
   const isNew = !animatedIds.has(msg.id)
   const [animate, setAnimate] = useState(isNew)
 
   useEffect(() => {
     if (isNew) {
       animatedIds.add(msg.id)
-      // Remove animation classes after they complete so they don't replay
-      const timer = setTimeout(() => setAnimate(false), 1000)
+      const timer = setTimeout(() => setAnimate(false), 800)
       return () => clearTimeout(timer)
     }
   }, [msg.id, isNew])
 
-  const animClass = animate ? 'ink-bleed ink-reveal-active' : ''
+  const animClass = animate ? 'ink-bleed' : ''
 
   if (isMe) {
+    // Right-aligned "YOU" message — italic, right border
     return (
       <div
-        className={`flex flex-col items-end text-right pl-12 pr-3 border-r-2 border-[#B08D57]/70 py-1 mb-5 transition-colors duration-1000 ${animClass} ${
-          isHighlighted ? 'bg-[#B08D57]/20 rounded-l' : ''
+        className={`flex flex-col items-end text-right py-3 border-b border-[#D0C2A8]/30 transition-colors duration-500 ${animClass} ${
+          isHighlighted ? 'bg-[#B08D57]/10' : ''
         }`}
       >
-        <span className="text-[8px] font-sans uppercase tracking-widest text-[#8c7f67]/80 mb-1 select-none">
-          {timestamp} YOU {msg.status === 'pending' ? '· writing...' : msg.status === 'failed_pending_retry' ? '· retry pending...' : msg.status === 'failed' ? '· failed' : ''}
-        </span>
-        <span className="text-[17px] text-[#1F1B16] font-handwritten leading-loose italic block break-words max-w-full">
+        {/* Timestamp row */}
+        <div className="flex items-baseline gap-2 mb-1">
+          <span className="text-[9px] font-sans text-[#9a8c78] tracking-wider">
+            {timestamp}
+          </span>
+          <span className="text-[9px] font-sans font-bold text-[#9a8c78] tracking-widest uppercase">
+            YOU
+            {msg.status === 'pending' ? ' · writing…' : ''}
+            {msg.status === 'failed_pending_retry' ? ' · pending retry…' : ''}
+            {msg.status === 'failed' ? ' · failed' : ''}
+          </span>
+        </div>
+        {/* Message text — italic, serif */}
+        <p className="font-serif text-[14px] text-[#2C2418] italic leading-relaxed m-0 max-w-full break-words">
           {highlightText(msg.content, searchQuery)}
-        </span>
+        </p>
       </div>
     )
   } else {
+    // Left-aligned message — sender name + time above
     return (
       <div
-        className={`flex flex-col items-start text-left pr-12 pl-3 py-1 mb-5 transition-colors duration-1000 ${animClass} ${
-          isHighlighted ? 'bg-[#B08D57]/20 rounded-r' : ''
+        className={`flex flex-col items-start text-left py-3 border-b border-[#D0C2A8]/30 transition-colors duration-500 ${animClass} ${
+          isHighlighted ? 'bg-[#B08D57]/10' : ''
         }`}
       >
-        <span className="text-[8px] font-sans uppercase tracking-widest text-[#B08D57]/90 mb-1 select-none">
-          {(msg.sender?.displayName || 'Scribe').toUpperCase()} · {timestamp}
-        </span>
-        <span className="text-[17px] text-[#3B352C] font-handwritten leading-loose block break-words max-w-full font-normal">
+        {/* Sender + timestamp row */}
+        <div className="flex items-baseline gap-2 mb-1">
+          <span className="text-[9px] font-sans font-bold text-[#9a8c78] tracking-widest uppercase">
+            {senderName}
+          </span>
+          <span className="text-[9px] font-sans text-[#9a8c78] tracking-wider">
+            {timestamp}
+          </span>
+        </div>
+        {/* Message text — plain serif */}
+        <p className="font-serif text-[14px] text-[#2C2418] leading-relaxed m-0 max-w-full break-words">
           {highlightText(msg.content, searchQuery)}
-        </span>
+        </p>
       </div>
     )
   }
-}, (prevProps, nextProps) => {
+}), (prevProps, nextProps) => {
   return (
     prevProps.msg.id === nextProps.msg.id &&
     prevProps.msg.status === nextProps.msg.status &&

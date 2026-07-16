@@ -31,7 +31,7 @@
   --desk-bg: radial-gradient(circle, #3E2D21 0%, #1E130C 100%);
   --cover-bg: #4A3223;
   --paper-bg: #F4ECDD;
-  --paper-lines: rgba(90, 70, 45, 0.07);
+  --paper-lines: rgba(160, 130, 90, 0.13);
   /* Accent colors */
   --accent: #6B7A4F;
   --ribbon-bg: #52664A;
@@ -145,10 +145,16 @@ body {
   transition: background 0.4s ease;
 }
 
-/* 3. Lined Paper matching font-heights */
+/* 3. Lined Paper matching font-heights — 40px spacing */
 .ruled-paper {
-  background-image: repeating-linear-gradient(180deg, transparent 0 35px, var(--paper-lines) 35px 36px);
-  background-position: 0 4px;
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0px,
+    transparent 39px,
+    var(--paper-lines) 39px,
+    var(--paper-lines) 40px
+  );
+  background-position: 0 0;
 }
 
 /* 4. Book Gutter Spine Shadows */

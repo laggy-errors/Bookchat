@@ -54,107 +54,111 @@ export const WritingPage: React.FC<WritingPageProps> = ({
   onMobileBack
 }) => {
   return (
-    <div 
+    <div
       id="tour-writing-area"
-      className={`w-full md:w-1/2 h-full flex flex-col justify-between p-6 md:p-10 md:pl-[38px] border-l border-black/5 shadow-[inset_30px_0_40px_rgba(0,0,0,0.06)] ruled-paper paper-texture ${
+      className={`w-full md:w-1/2 h-full flex flex-col border-l border-black/5 shadow-[inset_20px_0_30px_rgba(0,0,0,0.04)] ruled-paper paper-texture overflow-hidden ${
         mobileActivePage === 'writing' ? 'flex' : 'hidden md:flex'
       }`}
     >
-      {/* Ribbon Bookmark copy invite code tab */}
+      {/* Ribbon Bookmark — top-right copy invite code tab */}
       <RibbonBookmarkTab onClick={handleCopyInviteCode} />
 
-      <div>
-        <div className="flex items-center gap-3 mb-2 md:hidden">
-          {/* Calligraphy Mobile Back Arrow */}
-          <button 
+      {/* Mobile back button */}
+      {mobileActivePage === 'writing' && (
+        <div className="md:hidden px-6 pt-4 pb-0">
+          <button
             onClick={onMobileBack}
-            className="text-xs text-[#B08D57] hover:text-[#4A3223] transition-all cursor-pointer font-serif select-none font-bold uppercase tracking-wider"
-            title="Return to directories"
+            className="text-[11px] text-[#B08D57] hover:text-[#4A3223] transition font-serif cursor-pointer bg-none border-none p-0 select-none"
           >
-            ← Shelf Entries
+            ← Back to Shelf
           </button>
         </div>
+      )}
 
-        <PageHeader 
+      {/* Header — fixed at top */}
+      <div className="flex-shrink-0 px-8 pt-7">
+        <PageHeader
           bookName={bookDetails?.name || currentBook.name}
           isDefault={user.defaultBookId === (bookDetails?.id || currentBook.id)}
           updatingDefault={updatingDefault}
           onToggleDefault={handleToggleDefault}
+          onCopyInvite={handleCopyInviteCode}
         />
-
-        {/* Dynamic ruled notebook paper message log */}
-        <div 
-          ref={messageContainerRef}
-          onScroll={handleScroll}
-          className="flex-1 overflow-y-auto pr-2 my-2 flex flex-col gap-4 max-h-[350px] custom-scrollbar scroll-smooth-active"
-        >
-          {loadingMessages ? (
-            <div className="flex flex-col gap-6 py-4 animate-fade-in w-full">
-              {/* Message Placeholder A (Left) */}
-              <div className="flex flex-col items-start w-3/4 max-w-[280px] pl-4 pr-3 py-2 bg-[#ede3d0]/30 rounded border-l-2 border-[#B08D57]/20 animate-pulse">
-                <div className="h-2.5 w-16 bg-[#B08D57]/20 rounded mb-2"></div>
-                <div className="h-2 w-full bg-[#EDE3D0]/60 rounded mb-1"></div>
-                <div className="h-2 w-5/6 bg-[#EDE3D0]/40 rounded"></div>
-              </div>
-              {/* Message Placeholder B (Right) */}
-              <div className="flex flex-col items-end w-3/4 max-w-[280px] ml-auto pr-4 pl-3 py-2 bg-[#ede3d0]/30 rounded border-r-2 border-[#B08D57]/20 animate-pulse">
-                <div className="h-2.5 w-12 bg-[#B08D57]/20 rounded mb-2"></div>
-                <div className="h-2 w-full bg-[#EDE3D0]/60 rounded mb-1"></div>
-                <div className="h-2 w-3/4 bg-[#EDE3D0]/40 rounded"></div>
-              </div>
-              {/* Message Placeholder C (Left) */}
-              <div className="flex flex-col items-start w-3/4 max-w-[280px] pl-4 pr-3 py-2 bg-[#ede3d0]/30 rounded border-l-2 border-[#B08D57]/20 animate-pulse">
-                <div className="h-2.5 w-20 bg-[#B08D57]/20 rounded mb-2"></div>
-                <div className="h-2 w-5/6 bg-[#EDE3D0]/60 rounded"></div>
-              </div>
-            </div>
-          ) : !messages || messages.length === 0 ? (
-            <div className="text-xs text-[#8c7f67] italic text-center py-10 font-serif">
-              No ink has been spilled in this journal yet. Write below to begin.
-            </div>
-          ) : (
-            <>
-              {fetchingMore && (
-                <div className="text-[9px] text-[#8c7f67] italic text-center py-1 border-b border-dashed border-[#B08D57]/20 mb-2 font-serif">
-                  📜 Unrolling older entries...
-                </div>
-              )}
-              {messages.slice(-100).map((msg) => {
-                const isMe = msg.senderId === user.id
-                const isHighlighted = msg.id === highlightedMessageId
-                return (
-                  <MessageEntry 
-                    key={msg.id}
-                    msg={msg}
-                    isMe={isMe}
-                    isHighlighted={isHighlighted}
-                    highlightText={highlightText}
-                    searchQuery={searchQuery}
-                  />
-                )
-              })}
-            </>
-          )}
-        </div>
       </div>
 
-      <div>
-        {/* Subtle Typing Indicator Print */}
-        {Object.keys(typingUsers).length > 0 && (
-          <div className="px-4 py-1 text-[10px] text-[#8c7f67] italic animate-pulse flex items-center gap-1.5 font-serif text-left mb-2">
-            <span>✒️</span>
-            <span>{renderTypingText()}</span>
+      {/* Message Log — scrollable */}
+      <div
+        ref={messageContainerRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto custom-scrollbar scroll-smooth-active px-8 py-2 flex flex-col"
+      >
+        {loadingMessages ? (
+          /* Skeleton Loaders */
+          <div className="flex flex-col gap-0 animate-fade-in">
+            {/* Left skeleton */}
+            <div className="py-3 border-b border-[#D0C2A8]/30">
+              <div className="h-2 w-24 bg-[#D0C2A8]/60 rounded mb-2 animate-pulse" />
+              <div className="h-2.5 w-4/5 bg-[#D0C2A8]/40 rounded mb-1 animate-pulse" />
+              <div className="h-2.5 w-3/5 bg-[#D0C2A8]/30 rounded animate-pulse" />
+            </div>
+            {/* Right skeleton */}
+            <div className="py-3 border-b border-[#D0C2A8]/30 flex flex-col items-end">
+              <div className="h-2 w-20 bg-[#D0C2A8]/60 rounded mb-2 animate-pulse" />
+              <div className="h-2.5 w-4/5 bg-[#D0C2A8]/40 rounded mb-1 animate-pulse" />
+              <div className="h-2.5 w-2/5 bg-[#D0C2A8]/30 rounded animate-pulse" />
+            </div>
+            {/* Left skeleton 2 */}
+            <div className="py-3 border-b border-[#D0C2A8]/30">
+              <div className="h-2 w-20 bg-[#D0C2A8]/60 rounded mb-2 animate-pulse" />
+              <div className="h-2.5 w-3/5 bg-[#D0C2A8]/40 rounded animate-pulse" />
+            </div>
+          </div>
+        ) : !messages || messages.length === 0 ? (
+          <div className="flex-1 flex items-center justify-center">
+            <p className="text-[12px] text-[#9a8c78] italic font-serif text-center leading-relaxed max-w-[220px]">
+              No ink has been spilled in this journal yet.<br />Write below to begin.
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col">
+            {fetchingMore && (
+              <div className="text-[9px] text-[#8c7f67] italic text-center py-2 border-b border-dashed border-[#B08D57]/20 mb-2 font-serif">
+                📜 Unrolling older entries…
+              </div>
+            )}
+            {messages.slice(-100).map((msg) => {
+              const isMe = msg.senderId === user.id
+              const isHighlighted = msg.id === highlightedMessageId
+              return (
+                <MessageEntry
+                  key={msg.id}
+                  msg={msg}
+                  isMe={isMe}
+                  isHighlighted={isHighlighted}
+                  highlightText={highlightText}
+                  searchQuery={searchQuery}
+                />
+              )
+            })}
           </div>
         )}
-
-        {/* Bottom Composer Capsule */}
-        <ComposerBar 
-          composerText={composerText}
-          onChange={handleComposerChange}
-          onKeyDown={handleKeyDown}
-          onSend={handleSendMessage}
-        />
       </div>
+
+      {/* Typing indicator */}
+      {Object.keys(typingUsers).length > 0 && (
+        <div className="flex-shrink-0 px-8 py-1.5 flex items-center gap-1.5 text-[10px] text-[#8c7f67] italic animate-pulse font-serif">
+          <span>✒️</span>
+          <span>{renderTypingText()}</span>
+        </div>
+      )}
+
+      {/* Composer Bar — always at bottom */}
+      <ComposerBar
+        composerText={composerText}
+        onChange={handleComposerChange}
+        onKeyDown={handleKeyDown}
+        onSend={handleSendMessage}
+      />
     </div>
   )
 }
