@@ -860,13 +860,13 @@ function App() {
     return (
       <div className="flex flex-col flex-1 items-center justify-center min-h-screen bg-[#1E130C] p-4 md:p-6 overflow-hidden select-none w-full relative">
         
-        {/* Core Book Outer Frame with Book Shadow and 3D Open */}
+        {/* Core Book Outer Frame with Book Shadow, Leather Stitching and 3D Open */}
         <div 
-          className="relative w-full max-w-[1060px] h-[92vh] md:h-[640px] rounded-[16px] p-1.5 md:p-3 book-shadow book-open-animation"
+          className="relative w-full max-w-[1060px] h-[92vh] md:h-[640px] rounded-[12px] p-2 md:p-4 book-shadow book-open-animation leather-cover-stitch"
           style={{ perspective: '1600px', backgroundColor: 'var(--cover-bg)', transition: 'background-color 0.4s ease' }}
         >
           {/* Symmetrical Page Stack Borders */}
-          <div className="absolute inset-1.5 md:inset-3 pages-stack-effect"></div>
+          <div className="absolute inset-2 md:inset-4 pages-stack-effect"></div>
 
           {/* Left Hardcover Icon Rail */}
           <LeftHardcoverNav 

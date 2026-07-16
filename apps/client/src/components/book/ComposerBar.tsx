@@ -23,15 +23,15 @@ export const ComposerBar: React.FC<ComposerBarProps> = ({
   }, [composerText])
 
   return (
-    <div className="flex-shrink-0 border-t border-[#D0C2A8]/60 bg-transparent">
+    <div className="flex-shrink-0 border-t border-[#503723]/15 bg-transparent select-none">
       <div className="flex items-center gap-0">
 
-        {/* Attachment label */}
-        <span className="flex-shrink-0 font-serif text-[11px] text-[#9a8c78] px-4 py-3 border-r border-[#D0C2A8]/50 select-none">
+        {/* Attachment stamp */}
+        <span className="flex-shrink-0 font-serif text-[11px] uppercase tracking-wider text-[#8A5B44] px-5 py-4 border-r border-[#503723]/15 select-none opacity-80">
           attachment
         </span>
 
-        {/* Text input area */}
+        {/* Text area (writing page lines cursor) */}
         <textarea
           ref={textareaRef}
           rows={1}
@@ -40,30 +40,32 @@ export const ComposerBar: React.FC<ComposerBarProps> = ({
           onChange={onChange}
           onKeyDown={onKeyDown}
           maxLength={500}
-          aria-label="Journal ledger message input"
-          className="flex-1 bg-transparent border-none outline-none text-[13px] text-[#2C2418] placeholder-[#bdb099] font-serif resize-none max-h-24 px-4 py-3 custom-scrollbar leading-relaxed"
+          aria-label="Journal message input"
+          className="flex-1 bg-transparent border-none outline-none text-[14px] text-[#2D2116] placeholder-[#8A5B44]/50 font-serif resize-none max-h-24 px-5 py-4 custom-scrollbar leading-[24px] fountain-pen-cursor"
           style={{ height: 'auto' }}
         />
 
-        {/* Send / edit button */}
-        <button
-          type="button"
-          onClick={onSend}
-          disabled={!composerText.trim() || composerText.length > 500}
-          aria-label="Send message"
-          className="flex-shrink-0 font-serif text-[12px] font-bold text-[#2C2418] hover:text-[#6B3A2A] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition px-4 py-3 bg-none border-none select-none border-l border-[#D0C2A8]/50"
-          title="Press Enter to send"
-        >
-          edit
-        </button>
+        {/* Circular Wax Seal Send button */}
+        <div className="px-5 py-3 flex-shrink-0 flex items-center justify-center">
+          <button
+            type="button"
+            onClick={onSend}
+            disabled={!composerText.trim() || composerText.length > 500}
+            aria-label="Spill ink message"
+            className="w-8 h-8 rounded-full bg-[#6D3F2C] hover:bg-[#8A5B44] text-[#F8F3E8] flex items-center justify-center font-serif text-[11px] font-bold shadow-[0_2px_6px_rgba(50,30,10,0.22)] cursor-pointer hover:rotate-4 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed select-none border-none outline-none"
+            title="Press Enter to send"
+          >
+            ✒️
+          </button>
+        </div>
       </div>
 
-      {/* Character limit indicator */}
+      {/* Character limit overlay */}
       {composerText.length > 400 && (
-        <div className="flex justify-end px-4 pb-1 text-[8px] font-sans text-[#8c7f67]/60">
+        <div className="flex justify-end px-5 pb-1 text-[8px] font-sans text-[#8A5B44]/60">
           <span
             aria-live="polite"
-            className={composerText.length > 480 ? 'text-[#7A3B2E] font-bold' : ''}
+            className={composerText.length > 480 ? 'text-[#6D3F2C] font-bold' : ''}
           >
             {composerText.length}/500
           </span>

@@ -35,50 +35,51 @@ export const MessageEntry = React.memo<MessageEntryProps>((({
   const animClass = animate ? 'ink-bleed' : ''
 
   if (isMe) {
-    // Right-aligned "YOU" message — italic, right border
+    // Current User: Right-aligned, italic serif, looks like handwritten ink, -1deg rotation, no background
     return (
       <div
-        className={`flex flex-col items-end text-right py-3 border-b border-[#D0C2A8]/30 transition-colors duration-500 ${animClass} ${
-          isHighlighted ? 'bg-[#B08D57]/10' : ''
+        className={`flex flex-col items-end text-right py-4 mb-4 transition-all duration-500 ${animClass} ${
+          isHighlighted ? 'bg-[#C8A96A]/10' : ''
         }`}
+        style={{ transform: 'rotate(-1deg)', transformOrigin: 'right center' }}
       >
-        {/* Timestamp row */}
-        <div className="flex items-baseline gap-2 mb-1">
-          <span className="text-[9px] font-sans text-[#9a8c78] tracking-wider">
+        {/* Timestamp header */}
+        <div className="flex items-baseline gap-2 mb-1 select-none">
+          <span className="text-[9px] font-sans text-[#8A5B44]/70 tracking-wider">
             {timestamp}
           </span>
-          <span className="text-[9px] font-sans font-bold text-[#9a8c78] tracking-widest uppercase">
+          <span className="text-[9px] font-sans font-bold text-[#8A5B44] tracking-widest uppercase">
             YOU
-            {msg.status === 'pending' ? ' · writing…' : ''}
-            {msg.status === 'failed_pending_retry' ? ' · pending retry…' : ''}
-            {msg.status === 'failed' ? ' · failed' : ''}
           </span>
         </div>
-        {/* Message text — italic, serif */}
-        <p className="font-serif text-[14px] text-[#2C2418] italic leading-relaxed m-0 max-w-full break-words">
+        {/* Message body: Italic EB Garamond (looks like handwriting) */}
+        <p 
+          className="font-serif text-[15px] italic text-[#2D2116] leading-[40px] m-0 max-w-[85%] break-words outline-none"
+          style={{ letterSpacing: '0.02em' }}
+        >
           {highlightText(msg.content, searchQuery)}
         </p>
       </div>
     )
   } else {
-    // Left-aligned message — sender name + time above
+    // Other User: Left-aligned, small uppercase brown name, EB Garamond readable serif, no bubbles
     return (
       <div
-        className={`flex flex-col items-start text-left py-3 border-b border-[#D0C2A8]/30 transition-colors duration-500 ${animClass} ${
-          isHighlighted ? 'bg-[#B08D57]/10' : ''
+        className={`flex flex-col items-start text-left py-4 mb-4 transition-colors duration-500 ${animClass} ${
+          isHighlighted ? 'bg-[#C8A96A]/10' : ''
         }`}
       >
-        {/* Sender + timestamp row */}
-        <div className="flex items-baseline gap-2 mb-1">
-          <span className="text-[9px] font-sans font-bold text-[#9a8c78] tracking-widest uppercase">
+        {/* Sender + timestamp */}
+        <div className="flex items-baseline gap-2 mb-1 select-none">
+          <span className="text-[9px] font-sans font-bold text-[#8A5B44] tracking-widest uppercase">
             {senderName}
           </span>
-          <span className="text-[9px] font-sans text-[#9a8c78] tracking-wider">
+          <span className="text-[9px] font-sans text-[#8A5B44]/70 tracking-wider">
             {timestamp}
           </span>
         </div>
-        {/* Message text — plain serif */}
-        <p className="font-serif text-[14px] text-[#2C2418] leading-relaxed m-0 max-w-full break-words">
+        {/* Message body: EB Garamond readable serif */}
+        <p className="font-serif text-[15px] text-[#2D2116] leading-[40px] m-0 max-w-[85%] break-words">
           {highlightText(msg.content, searchQuery)}
         </p>
       </div>

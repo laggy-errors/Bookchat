@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=Caveat:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Caveat:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,88 +6,87 @@
 
 /* Custom font families */
 :root {
-  --font-serif: "Lora", serif;
-  --font-display: "Fraunces", serif;
+  --font-serif: "EB Garamond", serif;
+  --font-display: "Cormorant Garamond", serif;
   --font-handwritten: "Caveat", cursive;
 
   /* Custom palette matching physical media guidelines */
-  --color-paper-cream: #F4ECDD;
-  --color-paper-bone: #EDE3D0;
+  --color-paper-cream: #F8F3E8;
+  --color-paper-bone: #F3E9D7;
   --color-paper-beige: #E3D5B8;
-  --color-wood-dark: #241A12;
-  --color-wood-mid: #3B2A1C;
-  --color-wood-light: #4A3223;
-  --color-ink-black: #1F1B16;
-  --color-ink-soft: #3B352C;
+  --color-wood-dark: #2D2116;
+  --color-wood-mid: #6D3F2C;
+  --color-wood-light: #8A5B44;
+  --color-ink-black: #2D2116;
+  --color-ink-soft: #8A5B44;
   --color-olive: #6B7A4F;
-  --color-brass: #B08D57;
-  --color-oxblood: #7A3B2E;
-  --color-sage: #7C8B6B;
+  --color-brass: #C8A96A;
+  --color-oxblood: #6D3F2C;
 }
 
 /* ===== Dynamic CSS Variable Token Set ===== */
 :root {
   /* Default Paper Theme - Updated for higher contrast */
   --desk-bg: radial-gradient(circle, #3E2D21 0%, #1E130C 100%);
-  --cover-bg: #4A3223;
-  --paper-bg: #F4ECDD;
-  --paper-lines: rgba(160, 130, 90, 0.13);
+  --cover-bg: #6D3F2C;
+  --paper-bg: #F8F3E8;
+  --paper-lines: rgba(80, 55, 35, 0.1);
   /* Accent colors */
-  --accent: #6B7A4F;
-  --ribbon-bg: #52664A;
-  --border-color: rgba(90, 70, 45, 0.12);
+  --accent: #6D3F2C;
+  --ribbon-bg: #8A5B44;
+  --border-color: rgba(80, 55, 35, 0.12);
   /* Text colors with improved contrast */
-  --text-primary: #F5F1ED; /* light near-white for readability on dark backgrounds */
-  --text-secondary: #D0C5B8; /* softer contrast for secondary text */
-  --brass-accent: #B08D57;
+  --text-primary: #F8F3E8; /* light near-white for readability on dark backgrounds */
+  --text-secondary: #C8A96A; /* softer contrast for secondary text */
+  --brass-accent: #C8A96A;
   /* Additional contrast helpers */
   --text-primary-high: #FFFFFF;
-  --text-primary-low: #C0B6A8;
+  --text-primary-low: #C8A96A;
 }
 
 :root {
   --shadow-gutter-left: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.03) 75%, rgba(0,0,0,0.2) 100%);
   --shadow-gutter-right: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.03) 25%, rgba(0,0,0,0) 100%);
-  --shadow-ambient: 0 30px 70px rgba(0,0,0,0.65), 0 4px 10px rgba(0,0,0,0.3);
+  --shadow-ambient: 0 4px 12px rgba(50,30,10,.08), 0 8px 18px rgba(50,30,10,.12);
 }
 
 html[data-theme="cabinet"] {
   --desk-bg: radial-gradient(circle, #4A4642 0%, #201E1D 100%);
-  --cover-bg: #2E2B27;
-  --paper-bg: #EFE6D3;
-  --paper-lines: rgba(70, 60, 50, 0.08);
-  --accent: #8A6A3C;
-  --ribbon-bg: #8A6A3C;
-  --border-color: rgba(70, 60, 50, 0.15);
-  --text-primary: #1F1B16;
-  --text-secondary: #3B352C;
-  --brass-accent: #B08D57;
+  --cover-bg: #2D2116;
+  --paper-bg: #F3E9D7;
+  --paper-lines: rgba(80, 55, 35, 0.1);
+  --accent: #8A5B44;
+  --ribbon-bg: #C8A96A;
+  --border-color: rgba(80, 55, 35, 0.12);
+  --text-primary: #2D2116;
+  --text-secondary: #8A5B44;
+  --brass-accent: #C8A96A;
 }
 
 html[data-theme="library"] {
   --desk-bg: radial-gradient(circle, #2A1F15 0%, #0E0A07 100%);
-  --cover-bg: #5C2E16;
-  --paper-bg: #F1E6CE;
-  --paper-lines: rgba(90, 60, 40, 0.08);
-  --accent: #8A4F2A;
-  --ribbon-bg: #6E4B2A;
-  --border-color: rgba(90, 60, 40, 0.15);
-  --text-primary: #1F1B16;
-  --text-secondary: #3B352C;
-  --brass-accent: #B08D57;
+  --cover-bg: #2D2116;
+  --paper-bg: #F8F3E8;
+  --paper-lines: rgba(80, 55, 35, 0.1);
+  --accent: #6D3F2C;
+  --ribbon-bg: #8A5B44;
+  --border-color: rgba(80, 55, 35, 0.12);
+  --text-primary: #2D2116;
+  --text-secondary: #8A5B44;
+  --brass-accent: #C8A96A;
 }
 
 html[data-theme="corkboard"] {
   --desk-bg: radial-gradient(circle, #8C6A4A 0%, #3B2A1C 100%);
-  --cover-bg: #7A5A3A;
-  --paper-bg: #F5E9C8;
-  --paper-lines: rgba(120, 80, 60, 0.08);
-  --accent: #A9432E;
-  --ribbon-bg: #A9432E;
-  --border-color: rgba(120, 80, 60, 0.18);
-  --text-primary: #1F1B16;
-  --text-secondary: #3B352C;
-  --brass-accent: #B08D57;
+  --cover-bg: #6D3F2C;
+  --paper-bg: #F3E9D7;
+  --paper-lines: rgba(80, 55, 35, 0.12);
+  --accent: #6D3F2C;
+  --ribbon-bg: #6D3F2C;
+  --border-color: rgba(80, 55, 35, 0.15);
+  --text-primary: #2D2116;
+  --text-secondary: #8A5B44;
+  --brass-accent: #C8A96A;
 }
 
 /* ===== Base Overrides ===== */
@@ -98,11 +97,21 @@ html, body {
 body {
   margin: 0;
   font-family: var(--font-serif);
-  color: var(--text-primary);
+  color: var(--color-ink-black);
   background: var(--desk-bg);
   min-height: 100vh;
   overflow-x: hidden;
   transition: background 0.4s ease;
+  /* Very subtle warm vignette */
+  position: relative;
+}
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 40%, rgba(35, 20, 10, 0.15) 100%);
+  pointer-events: none;
+  z-index: 999;
 }
 
 /* Root React mount fills the viewport */
@@ -257,37 +266,43 @@ body {
 
 /* 13. Paper card hover lift effect */
 .paper-card-hover {
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  transition: transform 250ms ease, box-shadow 250ms ease, background 250ms ease;
 }
 .paper-card-hover:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transform: translateY(-2px) translateX(3px);
+  box-shadow: 0 4px 12px rgba(50,30,10,.08);
 }
 .paper-card-hover:active {
-  transform: translateY(0);
+  transform: translateY(0) translateX(0);
 }
 
-/* 14. Custom scrollbar — thin warm-toned */
+/* 14. Custom scrollbar — thin leather strip */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(176, 141, 87, 0.35) transparent;
+  scrollbar-color: #8A5B44 transparent;
 }
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(176, 141, 87, 0.35);
-  border-radius: 2px;
+  background: #8A5B44;
+  border-radius: 4px;
+  border: 1px solid #6D3F2C;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(176, 141, 87, 0.6);
+  background: #6D3F2C;
 }
 
-/* 15. Touch / click target minimum size (accessibility) */
+/* 15. Fountain pen writing cursor */
+.fountain-pen-cursor {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236D3F2C' stroke-width='2'%3E%3Cpath d='M12 2s-3 4-3 9c0 3.5 2.5 5 3 7h0c.5-2 3-3.5 3-7 0-5-3-9-3-9z'/%3E%3Cline x1='12' y1='2' x2='12' y2='12'/%3E%3C/svg%3E"), auto;
+}
+
+/* 16. Touch / click target minimum size */
 .touch-target {
   min-width: 36px;
   min-height: 36px;
@@ -296,12 +311,12 @@ body {
   justify-content: center;
 }
 
-/* 16. Smooth scroll active state */
+/* 17. Smooth scroll active state */
 .scroll-smooth-active {
   scroll-behavior: smooth;
 }
 
-/* 17. Page-turn class (visual feedback during book switch) */
+/* 18. Page-turn class */
 .page-turn-active {
   animation: pageTurnAnim 0.35s ease-in-out;
 }
@@ -312,12 +327,9 @@ body {
   100% { opacity: 1; transform: scaleX(1); }
 }
 
-/* 18. Custom gold sweep shimmer border animation keyframe */
-@keyframes shimmer {
-  0% {
-    left: -150%;
-  }
-  50%, 100% {
-    left: 150%;
-  }
+/* 19. Custom leather cover stitching border */
+.leather-cover-stitch {
+  border: 2px dashed rgba(80, 55, 35, 0.4);
+  outline: 6px solid #2D2116;
+  outline-offset: -4px;
 }
