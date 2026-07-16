@@ -91,17 +91,25 @@ html[data-theme="corkboard"] {
 }
 
 /* ===== Base Overrides ===== */
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: var(--font-serif);
   color: var(--text-primary);
   background: var(--desk-bg);
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-x: hidden;
   transition: background 0.4s ease;
+}
+
+/* Root React mount fills the viewport */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===== Skeuomorphic Design Utilities ===== */

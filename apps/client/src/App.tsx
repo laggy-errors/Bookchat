@@ -858,7 +858,7 @@ function App() {
 
     // 4. Final Step: Main Open Book Workspace
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#1E130C] p-6 overflow-hidden select-none w-full relative">
+      <div className="flex flex-col flex-1 items-center justify-center min-h-screen bg-[#1E130C] p-4 md:p-6 overflow-hidden select-none w-full relative">
         
         {/* Core Book Outer Frame with Book Shadow and 3D Open */}
         <div 
