@@ -168,7 +168,6 @@ body {
 .ribbon-sway {
   transform-origin: top center;
   animation: ribbonSwayAnim 6s ease-in-out infinite;
-  /* Pause sway on hover/focus to save battery */
   will-change: transform;
 }
 .ribbon-sway:hover,
@@ -297,4 +296,14 @@ body {
   0%   { opacity: 1; transform: scaleX(1); }
   50%  { opacity: 0.4; transform: scaleX(0.97); }
   100% { opacity: 1; transform: scaleX(1); }
+}
+
+/* 18. Custom gold sweep shimmer border animation keyframe */
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  50%, 100% {
+    left: 150%;
+  }
 }
